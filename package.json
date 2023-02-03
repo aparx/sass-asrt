@@ -1,6 +1,6 @@
 {
   "name": "sass-asrt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple error, assertion and type utilities for Sass",
   "author": "zvint",
   "license": "MIT",
