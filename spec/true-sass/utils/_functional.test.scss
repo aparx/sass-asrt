@@ -1,0 +1,31 @@
+@use "../../../node_modules/sass-true" as true;
+@use "../../../src/utils/functional";
+
+@include true.describe('nonnull-or [function]') {
+  @include true.it('Returns x if x is not null, otherwise y') {
+    @include true.assert-equal(functional.nonnull-or(null, "yZ"), "yZ");
+    @include true.assert-equal(functional.nonnull-or("aB", "yZ"), "aB");
+    @include true.assert-equal(functional.nonnull-or("aB", null), "aB");
+    @include true.assert-equal(functional.nonnull-or(null, null), null);
+  }
+}
+
+@include true.describe('truthy-or [function]') {
+  @include true.it('Returns x if x is truthy, otherwise y') {
+    @include true.assert-equal(functional.truthy-or("x", null), "x");
+    @include true.assert-equal(functional.truthy-or(null, "y"), "y");
+    @include true.assert-equal(functional.truthy-or('', "y"), "y");
+    @include true.assert-equal(functional.truthy-or((), (y)), (y));
+    @include true.assert-equal(functional.truthy-or((a: x), (y)), (a: x));
+  }
+}
+
+@include true.describe('falsy-or [function]') {
+  @include true.it('Returns x if x is falsy, otherwise y') {
+    @include true.assert-equal(functional.falsy-or("x", null), null);
+    @include true.assert-equal(functional.falsy-or(null, "y"), null);
+    @include true.assert-equal(functional.falsy-or('', "y"), '');
+    @include true.assert-equal(functional.falsy-or((), (y)), ());
+    @include true.assert-equal(functional.falsy-or((a: x), (y)), (y));
+  }
+}

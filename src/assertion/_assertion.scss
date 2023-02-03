@@ -1,0 +1,217 @@
+@use "sass:meta";
+@use "sass:list";
+@use "sass:string";
+@use "shared" as *;
+@use "../utils";
+@use "../error";
+
+/// Asserts `$pValue` to be equal to `$pExpected`.
+/// @name assert-equal
+/// @group assertion
+/// @param {*} $pExpected - the value expected from `$pValue`
+/// @param {*} $pValue - the value to spec against `$pExpected`
+/// @param {*} $pMessage [_equal_fail($pExpected)] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws an error
+@function equal(
+  $pExpected, $pValue,
+  $pMessage: _equal_fail($pExpected),
+  $pHandler: default-throw-handler()
+) {
+  @return if($pExpected != $pValue,
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be unequal to `$pUnexpected`.
+/// @name assert-unequal
+/// @group assertion
+/// @param {*} $pUnexpected - the value not expected from `$pValue`
+/// @param {*} $pValue - the value to spec against `$pUnexpected`
+/// @param {*} $pMessage [_unequal_fail($pExpected)] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws an error
+@function unequal(
+  $pUnexpected, $pValue,
+  $pMessage: _unequal_fail($pUnexpected),
+  $pHandler: default-throw-handler()
+) {
+  @return if($pUnexpected != $pValue,
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pCondition` to be equal to true.
+/// @name assert-true
+/// @group assertion
+/// @param {*} $pValue - the value to check
+/// @param {*} $pMessage ["condition must be true"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pCondition` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pCondition` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws an error
+@function true(
+  $pCondition,
+  $pMessage: "condition must be true",
+  $pHandler: default-throw-handler()
+) {
+  @return if($pCondition != true,
+    error.throw($pMessage, $pHandler, $pCondition),
+    $pCondition);
+}
+
+/// Asserts `$pCondition` to be equal to false.
+/// @name assert-false
+/// @group assertion
+/// @param {*} $pValue - the value to check
+/// @param {*} $pMessage ["condition must be false"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-resolutions
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pCondition` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pCondition` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws an error
+@function false(
+  $pCondition,
+  $pMessage: "condition must be false",
+  $pHandler: default-throw-handler()
+) {
+  @return if($pCondition != false,
+    error.throw($pMessage, $pHandler, $pCondition),
+    $pCondition);
+}
+
+// mixin variants for above assertions
+
+/// Asserts `$pValue` to be equal to `$pExpected`.
+/// This mixin is an alias for the function `assert-equal`.
+/// @name assert-equal
+/// @group assertion
+/// @param {*} $pExpected - the value expected from `$pValue`
+/// @param {*} $pValue - the value to spec against `$pExpected`
+/// @param {*} $pMessage [_equal_fail($pExpected)] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} assert-equal
+/// @throws if the assertion fails and the handler throws an error
+@mixin equal(
+  $pExpected, $pValue,
+  $pMessage: _equal_fail($pExpected),
+  $pHandler: default-throw-handler()
+) {
+  $_: equal($pExpected, $pValue, $pMessage, $pHandler);
+}
+
+/// Asserts `$pValue` to be unequal to `$pUnexpected`.
+/// This mixin is an alias for the function `assert-unequal`.
+/// @name assert-unequal
+/// @group assertion
+/// @param {*} $pUnexpected - the value not expected from `$pValue`
+/// @param {*} $pValue - the value to spec against `$pUnexpected`
+/// @param {*} $pMessage [_equal_fail($pExpected)] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} assert-unequal
+/// @throws if the assertion fails and the handler throws an error
+@mixin unequal(
+  $pUnexpected, $pValue,
+  $pMessage: _unequal_fail($pUnexpected),
+  $pHandler: default-throw-handler()
+) {
+  $_: unequal($pUnexpected, $pValue, $pMessage, $pHandler);
+}
+
+/// Asserts `$pCondition` to be equal to true.
+/// This mixin is an alias for the function `assert-true`.
+/// @name assert-true
+/// @group assertion
+/// @param {*} $pValue - the value to check
+/// @param {*} $pMessage ["condition must be true"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} assert-true
+/// @throws if the assertion fails and the handler throws an error
+@mixin true(
+  $pCondition,
+  $pMessage: "condition must be true",
+  $pHandler: default-throw-handler()
+) {
+  $_: true($pCondition, $pMessage, $pHandler);
+}
+
+/// Asserts `$pCondition` to be equal to false.
+/// This mixin is an alias for the function `assert-false`.
+/// @name assert-false
+/// @group assertion
+/// @param {*} $pValue - the value to check
+/// @param {*} $pMessage ["condition must be false"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} assert-false
+/// @throws if the assertion fails and the handler throws an error
+@mixin false(
+  $pCondition,
+  $pMessage: "condition must be false",
+  $pHandler: default-throw-handler()
+) {
+  $_: false($pCondition, $pMessage, $pHandler);
+}
+
+// <===> Complex error message factories <===>
+
+/// Returns an error message that is specific to when the `equal`
+/// assertion fails.
+/// @group assertion
+/// @param {*} $pExpected - the expected value
+/// @return {string} the final error message
+/// @access private
+@function _equal_fail($pExpected) {
+  @return "value is not equal to #{meta.inspect($pExpected)}";
+}
+
+/// Returns an error message that is specific to when the `unequal`
+/// assertion fails.
+/// @group assertion
+/// @param {*} $pExpected - the expected value
+/// @return {string} the final error message
+/// @access private
+@function _unequal_fail($pExpected) {
+  @return "value must not be equal to #{meta.inspect($pExpected)}";
+}

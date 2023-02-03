@@ -1,0 +1,308 @@
+// Module that contains type-specific utility functions
+// This module must not import another from this project
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+@use "sass:string";
+@use "unit";
+
+// Length specific
+
+/// Returns true if `$pValue` is empty.
+/// Given value must either be of type list, arglist, map or string.
+/// If the value is neither type, false is returned.
+/// @group utils
+/// @param {list | arglist | map | string} $pValue
+/// @return {boolean} - true if `$pValue` is empty
+@function is-empty($pValue) {
+  @return count($pValue) == 0;
+}
+
+/// Returns the length of `$pIterableOrString` and returns
+/// `$pFallback` if it is neither of type list, arglist, map nor
+/// string.
+/// @group utils
+/// @param {list | arglist | map | string} $pIterableOrString -
+///  the value which list or string length is returned (if possible)
+/// @param {*} $pFallback -
+///  returned if the value is neither an iterable nor a string
+/// @return {boolean} -
+///   the length of given value if possible, else `$pFallback`
+@function count($pIterableOrString, $pFallback: null) {
+  @if (is-iterable($pIterableOrString)) {
+    @return list.length($pIterableOrString);
+  } @else if (is-string($pIterableOrString)) {
+    @return string.length($pIterableOrString);
+  }
+  @return $pFallback;
+}
+
+// Object
+
+/// Returns true if `$pValue` is of type map.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a map
+@function is-map($pValue) {
+  @return meta.type-of($pValue) == 'map';
+}
+
+/// Returns true if `$pValue` is of type list.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a list
+@function is-list($pValue) {
+  @return meta.type-of($pValue) == 'list';
+}
+
+/// Returns true if `$pValue` is of type arglist.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is an arglist
+@function is-arglist($pValue) {
+  @return meta.type-of($pValue) == 'arglist';
+}
+
+/// Returns true if `$pValue` is of type function.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a function
+@function is-function($pValue) {
+  @return meta.type-of($pValue) == 'function';
+}
+
+/// Returns true if `$pValue` is an iterable.
+/// Given value is an iterable if it is either a list, an arglist
+/// or a map.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is an iterable
+@function is-iterable($pValue) {
+  @return is-list($pValue)
+    or is-arglist($pValue)
+    or is-map($pValue);
+}
+
+/// Returns true if `$pValue` is undefined.
+/// A value is undefined if it is null or "none".
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is undefined
+@function is-undefined($pValue) {
+  @return $pValue == null or $pValue == none;
+}
+
+// Primitive
+
+/// Returns true if `$pValue` is a primitive.
+/// Given value is a primitive if it is either a string, number,
+/// color or boolean.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a primitive
+@function is-primitive($pValue) {
+  @return is-string($pValue)
+    or is-number($pValue)
+    or is-color($pValue)
+    or is-bool($pValue);
+}
+
+/// Returns true if `$pValue` is a string.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a string
+@function is-string($pValue) {
+  @return meta.type-of($pValue) == 'string';
+}
+
+/// Returns true if `$pValue` is a number.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a number
+@function is-number($pValue) {
+  @return meta.type-of($pValue) == 'number';
+}
+
+/// Returns true if `$pValue` is a color.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a color
+@function is-color($pValue) {
+  @return meta.type-of($pValue) == 'color';
+}
+
+/// Returns true if `$pValue` is a boolean.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a boolean
+@function is-bool($pValue) {
+  @return meta.type-of($pValue) == 'bool';
+}
+
+/// Returns a boolean value if `$pValue` is natively truthy.
+/// A value is natively truthy if it is not null and not false.
+/// @group utils
+/// @param {*} $pValue - the value to return as a boolean
+/// @return {boolean} - true if `$pValue` is truthy
+@function as-boolean($pValue) {
+  @return if($pValue, true, false);
+}
+
+/// Returns true if `$pValue` is extensively truthy.
+/// A value is extensively truthy if it is natively truthy and neither
+/// an empty string, an empty list, an empty map nor numeric null.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a extensively truthy
+@function is-truthy($pValue) {
+  @return if((
+    (not not $pValue)
+    and $pValue != ''
+    and $pValue != ()
+    and $pValue != []
+    and $pValue != 0
+  ), true, false);
+}
+
+/// Returns true if `$pValue` is extensively falsy.
+/// A value is extensively falsy if it is natively falsy or either
+/// an empty string, an empty list, an empty map or numeric null.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} - true if `$pValue` is a extensively falsy
+@function is-falsy($pValue) {
+  @return not is-truthy($pValue);
+}
+
+// Specials (by Kitty Giraudel & Vinzent Zeband)
+
+/// Returns true if the `$pValue`'s unit is contained in `$pUnitList`.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @return {boolean} -
+///   true if `$pUnitList` contains the unit of `$Value`
+@function has-unit($pValue, $pUnitList) {
+  @return if(is-list($pUnitList),
+    is-truthy(index($pUnitList, unit($pValue))),
+    $pUnitList == unit($pValue));
+}
+
+/// Returns true if `$pValue` is a time or duration.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-times
+/// @return {boolean} - true if `$pValue` is a time value
+@function is-time($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.times());
+}
+
+/// Returns true if `$pValue` is a duration or time.
+/// @name is-duration
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-time
+/// @require {function} unit-times
+/// @return {boolean} - true if `$pValue` is a time value
+@function is-duration($pValue) {
+  @return is-time($pValue);
+}
+
+/// Returns true if `$pValue` is an angle.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-angles
+/// @return {boolean} - true if `$pValue` is an angle value
+@function is-angle($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.angles());
+}
+
+/// Returns true if `$pValue` is a frequency.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-frequencies
+/// @return {boolean} - true if `$pValue` is a frequency value
+@function is-frequency($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.frequencies());
+}
+
+/// Returns true if `$pValue` is an integer.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @return {boolean} - true if `$pValue` is an integer
+@function is-integer($pValue) {
+  @return is-number($pValue) and math.round($pValue) == $pValue;
+}
+
+/// Returns true if `$pValue` is a relative length.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-relative-lengths
+/// @return {boolean} - true if `$pValue` is a relative length
+@function is-relative-length($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.relative-lengths());
+}
+
+/// Returns true if `$pValue` is an absolute length.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-absolute-lengths
+/// @return {boolean} - true if `$pValue` is an absolute length
+@function is-absolute-length($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.absolute-lengths());
+}
+
+/// Returns true if `$pValue` is a percentage.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @return {boolean} - true if `$pValue` is a percentage
+@function is-percentage($pValue) {
+  @return is-number($pValue) and unit($pValue) == '%';
+}
+
+/// Returns true if `$pValue` is a length value.
+/// Given value is a length if it is either a relative- or absolute
+/// length.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-relative-length
+/// @require {function} is-absolute-length
+/// @return {boolean} - true if `$pValue` is a length value
+@function is-length($pValue) {
+  @return is-relative-length($pValue) or is-absolute-length($pValue);
+}
+
+/// Returns true if `$pValue` is a resolution.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-number
+/// @require {function} has-unit
+/// @require {function} unit-resolutions
+/// @return {boolean} - true if `$pValue` is a resolution
+@function is-resolution($pValue) {
+  @return is-number($pValue) and has-unit($pValue, unit.resolutions());
+}
+
+/// Returns true if `$pValue` is a position.
+/// @group utils
+/// @param {*} $pValue - the value to spec
+/// @require {function} is-length
+/// @require {function} is-percentage
+/// @require {function} has-unit
+/// @require {function} unit-positions
+/// @return {boolean} - true if `$pValue` is a position
+@function is-position($pValue) {
+  @return is-length($pValue) or is-percentage($pValue)
+          or index(unit.positions(), $pValue) != null;
+}

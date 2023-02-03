@@ -1,0 +1,793 @@
+// Module that contains assertions for most functions in `~/utils/types`.
+@use "sass:meta";
+@use "../utils";
+@use "../error";
+@use "shared" as *;
+
+// Length specific
+
+/// Asserts `$pIterableOrString` to be empty.
+/// The asserted value (`$pIterableOrString`) must either be type of
+/// string, list, map or arglist. If it is neither, the assertion
+/// fails.
+/// @name check-is-empty
+/// @group assertion
+/// @param {*} $pIterableOrString - the value to spec
+/// @param {*} $pMessage ["must be empty"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-empty
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, given value is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      given value is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-empty(
+  $pIterableOrString,
+  $pMessage: "must be empty",
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-empty($pIterableOrString),
+    error.throw($pMessage, $pHandler, $pIterableOrString),
+    $pIterableOrString);
+}
+
+/// Asserts `$pIterableOrString` to not be empty.
+/// The asserted value (`$pIterableOrString`) must either be type of
+/// string, list, map or arglist. If it is neither, the assertion
+/// succeeds.
+/// @name check-not-empty
+/// @group assertion
+/// @param {*} $pIterableOrString - the value to spec
+/// @param {*} $pMessage ["must not be empty"] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-empty
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, given value is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      given value is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function not-empty(
+  $pIterableOrString,
+  $pMessage: "must not be empty",
+  $pHandler: default-throw-handler()
+) {
+  @return if(utils.is-empty($pIterableOrString),
+    error.throw($pMessage, $pHandler, $pIterableOrString),
+    $pIterableOrString);
+}
+
+// Object
+
+/// Asserts `$pValue` to be of type map.
+/// @name check-is-map
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a map")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-map
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-map(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a map"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-map($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type list.
+/// @name check-is-list
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a list")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-list
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-list(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a list"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-list($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type arglist.
+/// @name check-is-arglist
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not an arglist")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-arglist
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-arglist(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not an arglist"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-arglist($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type function.
+/// @name check-is-function
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a function")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-function
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-function(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a function"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-function($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type iterable.
+/// An iterable is either a list, arglist or map.
+/// @name check-is-iterable
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not an iterable")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-iterable
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-iterable(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not an iterable"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-iterable($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be undefined.
+/// Undefined means it is either literal null or "none".
+/// @name check-is-undefined
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not undefined")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-undefined
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-undefined(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not undefined"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-undefined($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+// Primitive
+
+/// Asserts `$pValue` to be a primitive.
+/// A primitive is either a string, number, color or boolean.
+/// @name check-is-primitive
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a primitive")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-primitive
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-primitive(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a primitive"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-primitive($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type string.
+/// @name check-is-string
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a string")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-string
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-string(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a string"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-string($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type number.
+/// @name check-is-number
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a number")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-number
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-number(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a number"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-number($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be of type color.
+/// @name check-is-color
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a color")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-color
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-color(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a color"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-color($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a boolean (type of bool).
+/// @name check-is-bool
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a boolean")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-bool
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-bool(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a boolean"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-bool($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be extensively truthy.
+/// A value is extensively truthy if it is natively truthy and neither
+/// an empty string, an empty list, an empty map nor numeric null.
+/// @name check-is-truthy
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not truthy")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-truthy
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-truthy(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not truthy"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-truthy($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be extensively falsy.
+/// A value is extensively falsy if it is natively falsy or either
+/// an empty string, an empty list, an empty map or numeric null.
+/// @name check-is-falsy
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not falsy")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-falsy
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-falsy(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not falsy"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-falsy($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+// Specials
+
+/// Asserts `$pValue` to has a unit that is contained in given list.
+/// @name check-has-unit
+/// @group assertion
+/// @param {*} $pValue - the value to spec (not the unit standalone)
+/// @param {*} $pUnitList - the list of all units to spec for
+/// @param {*} $pMessage [_has_unit_fail($pValue, $pUnitList)] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} has-unit
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function has-unit(
+  $pValue, $pUnitList,
+  $pMessage: _has_unit_fail($pValue, $pUnitList),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.has-unit($pValue, $pUnitList),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a time value.
+/// @name check-is-time
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a time")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-time
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-time(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a time"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-time($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a duration.
+/// @name check-is-duration
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a duration")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-duration
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-duration(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a duration"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-duration($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be an angle.
+/// @name check-is-angle
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not an angle")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-angle
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-angle(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not an angle"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-angle($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a frequency.
+/// @name check-is-frequency
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a frequency")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-frequency
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-frequency(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a frequency"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-frequency($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be an integer.
+/// @name check-is-integer
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not an integer")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-integer
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-integer(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not an integer"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-integer($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a relative length.
+/// @name check-is-relative-length
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a relative length")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-relative-length
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-relative-length(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a relative length"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-relative-length($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be an absolute length.
+/// @name check-is-absolute-length
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not an absolute length")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-absolute-length
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-absolute-length(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not an absolute length"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-absolute-length($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a percentage.
+/// @name check-is-percentage
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a percentage")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-percentage
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-percentage(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a percentage"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-percentage($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a relative or absolute length.
+/// @name check-is-length
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a length")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-length
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-length(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a length"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-length($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a resolution.
+/// @name check-is-resolution
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a resolution")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-resolution
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-resolution(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a resolution"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-resolution($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+/// Asserts `$pValue` to be a position.
+/// @name check-is-position
+/// @group assertion
+/// @param {*} $pValue - the value to spec
+/// @param {*} $pMessage [_generic_fail($pValue, "not a position")] -
+///   the error message if this assertion fails (optional)
+/// @param {string | function} $pHandler [default-throw-handler()] -
+///   the handler that is used if the assertion fails (optional)
+/// @require {function} is-position
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. If the assertion does not fail, `$pValue` is returned.
+///   2. If the assertion fails and the handler does not terminate,
+///      `$pValue` is returned if the handler returns null.
+///      Otherwise, returns the handler's return value.
+///   3. Returns never if the assertion fails and the handler
+///      terminates (as in stops the compilation).
+/// @throws if the assertion fails and the handler throws
+@function is-position(
+  $pValue,
+  $pMessage: _generic_fail($pValue, "not a position"),
+  $pHandler: default-throw-handler()
+) {
+  @return if(not utils.is-position($pValue),
+    error.throw($pMessage, $pHandler, $pValue),
+    $pValue);
+}
+
+// <===> Complex error message factories <===>
+
+@function _has_unit_fail($pValue, $pUnits) {
+  @return "value #{meta.inspect($pValue)} is not any unit of: #{meta.inspect($pUnits)}"
+}
+
+@function _generic_fail($pValue, $pDetails) {
+  @return "value #{meta.inspect($pValue)} #{$pDetails}";
+}

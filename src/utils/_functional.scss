@@ -1,0 +1,41 @@
+// This module must not import another from this project, except "types"
+@use "types";
+
+/// Returns `$pValue` if `$pValue` is not null.
+/// Otherwise, returns `$pIfNull`.
+/// @name nonnull-or
+/// @group utils
+/// @param {*} $pValue - the value to spec to be not null
+/// @param {*} $pIfNull - the value returned if `$pValue` is null
+/// @return {*} `$pValue` if not null, else `$pIfNull`
+@function nonnull-or($pValue, $pIfNull) {
+  @return if($pValue != null, $pValue, $pIfNull);
+}
+
+/// Returns `$pValue` if `$pValue` is extensively truthy.
+/// Otherwise, returns `$pIfFalsy`.
+/// Given value is extensively truthy if it is neither numeric zero,
+/// an empty list, an empty map, an empty string nor false or null.
+/// @name truthy-or
+/// @group utils
+/// @param {*} $pValue - the value to spec to be truthy
+/// @param {*} $pIfFalsy - the value returned if `$pValue` is falsy
+/// @require {function} is-truthy
+/// @return {*} `$pValue` if truthy, else `$pIfFalsy`
+@function truthy-or($pValue, $pIfFalsy) {
+  @return if(types.is-truthy($pValue), $pValue, $pIfFalsy);
+}
+
+/// Returns `$pValue` if `$pValue` is extensively falsy.
+/// Otherwise, returns `$pIfTruthy`.
+/// Given value is extensively falsy if it is either numeric zero,
+/// an empty list, an empty map, an empty string, false or null.
+/// @name falsy-or
+/// @group utils
+/// @param {*} $pValue - the value to spec to be falsy
+/// @param {*} $pIfTruthy - the value returned if `$pValue` is truthy
+/// @require {function} is-falsy
+/// @return {*} `$pValue` if falsy, else `$pIfTruthy`
+@function falsy-or($pValue, $pIfTruthy) {
+  @return if(types.is-falsy($pValue), $pValue, $pIfTruthy);
+}

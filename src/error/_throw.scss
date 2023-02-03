@@ -1,0 +1,116 @@
+// File that handles exception `throw`s
+@use "sass:meta";
+@use "report";
+@use "handlers";
+@use "../utils/types";
+@use "../utils/functional" as *;
+
+/// Invokes given handler with `$pMessage` as the call argument.
+/// - If `$pHandler` is a string, the function associated to given
+///   string is called using `$pMessage`. If that function is not
+///   found, as in no handler with `$pHandler` as a name is found in
+///    the handler map, an error is thrown.
+/// - If `$pHandler` is a function, the function is called immediately
+///   using given `$pMessage` as argument.
+/// - If `$pHandler` is undefined, as in literal null or "none",
+///   the handler is not invoked and `$pIfNull` returned. The throw is
+///   essentially ignored - so be careful with passing the right
+///   handler.
+///
+/// If the result of the function call on the handler is not null,
+/// the result is returned. Otherwise, `$pIfNull` is returned.<br/>
+/// If `$pHandler` is neither undefined (null or "none), a function
+/// nor a string, an error is thrown.
+/// @group error
+/// @param {*} $pMessage - the error message passed to the handler
+/// @param {function | string} $pHandler [handlers.exit-handler()] -
+///   the target handler to invoke. Can be a string to reference an
+///   existing handler, or a function that is not required to be
+///   registered as a handler - as in not required to be associated to
+///   a certain handler name in the handler map. (optional)
+/// @param {*} $pIfNull [null] -
+///   the value returned alternatively, if the function call on the
+///   final handler that is used returns null (optional)
+/// @require {function} is-undefined
+/// @require {function} nonnull-or
+/// @require {function} throw-invoke
+/// @return {*} - Returns conditionally.
+///   1. Returns never if the used handler terminates the compilation.
+///   2. If the handler does not terminate, `$pIfNull` is returned if
+///      the result of the handler invocation is null. Otherwise,
+///      returns the result of the invocation.
+/// @throws
+///   Error if the invoke failed, the handler throws, `$pHandler` is
+///   neither undefined, a string nor a function, or if `$pHandler`
+///   is a string but no handler with that string as a name is found
+///   in the handler map.
+@function throw($pMessage, $pHandler: handlers.exit-handler(), $pIfNull: null) {
+  @return if(not types.is-undefined($pHandler),
+    // prefer `$pReturn` over invoke's result, if not null
+    nonnull-or($pIfNull, handlers.invoke($pHandler, $pMessage)),
+    $pIfNull);
+}
+
+/// Mixin alias that invokes [throw](#error-function-throw) using
+/// given arguments.
+/// @group error
+/// @param {*} $pMessage - the error message passed to the handler
+/// @param {function | string} $pHandler [handlers.exit-handler()] -
+///   the target handler to invoke. Can be a string to reference an
+///   existing handler, or a function that is not required to be
+///   registered as a handler - as in not required to be associated to
+///   a certain handler name in the handler map. (optional)
+/// @param {*} $pIfNull [null] -
+///   the value returned alternatively, if the function call on the
+///   final handler that is used returns null (optional)
+/// @throws
+///   Error if the invoke failed, the handler throws, `$pHandler` is
+///   neither undefined, a string nor a function, or if `$pHandler`
+///   is a string but no handler with that string as a name is found
+///   in the handler map.
+@mixin throw($pMessage, $pHandler: handlers.exit-handler(), $pIfNull: null) {
+  $_: throw($pMessage, $pHandler, $pIfNull);
+}
+
+/// Throws an error using given message and the default
+/// [throw-exit-handler](#error-function-throw-exit-handler),
+/// that terminates the compilation by default.
+/// @group error
+/// @param {*} $pMessage - the message passed to the exit handler
+/// @require {function} throw-exit-handler
+/// @require {function} throw
+/// @throws error if the handler throws (which it does by default)
+@mixin exit-throw($pMessage) {
+  $_: throw($pMessage, handlers.exit-handler());
+}
+
+/// Throws a warning using given message and the default
+/// [throw-warn-handler](#error-function-throw-warn-handler).
+/// @group error
+/// @param {*} $pMessage - the message passed to the warn handler
+/// @param {*} $pIfNull [null] -
+///   the value returned alternatively, if the function call on the
+///   warn handler returns null - which it does by default (optional)
+/// @require {function} throw-exit-handler
+/// @require {function} throw
+/// @return {*} - Returns conditionally.
+///   1. Returns never if the used handler terminates the compilation.
+///   2. If the handler does not terminate, `$pIfNull` is returned if
+///      the result of the handler invocation is null. Otherwise,
+///      returns the result of the invocation.
+/// @throws error if the handler throws (which it does by default)
+@function warn-throw($pMessage, $pIfNull: null) {
+  @return throw($pMessage, handlers.warn-handler(), $pIfNull);
+}
+
+/// Throws a warning using given message and the default
+/// [throw-warn-handler](#error-function-throw-warn-handler).
+/// @group error
+/// @param {*} $pMessage - the message passed to the warn handler
+/// @require {function} warn-throw
+/// @require {function} throw-exit-handler
+/// @require {function} throw
+/// @throws error if the handler throws (which it does by default)
+@mixin warn-throw($pMessage) {
+  $_: warn-throw($pMessage, null);
+}

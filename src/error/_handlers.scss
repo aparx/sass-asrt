@@ -1,0 +1,192 @@
+@use "sass:map";
+@use "sass:meta";
+@use "report";
+@use "../utils/types";
+
+/// A private map of all throw-handler functions associated to their
+/// handler name. This map acts as a registry of throw-handlers used
+/// to handle certain exception throws with better
+/// Developer Experience (DX).
+/// @group error
+/// @access private
+/// @type map
+$_ErrorHandlers: (
+  // <HANDLER> ::= <HANDLER_NAME>: <HANDLER_FUNCTION>
+  // Following are default handlers compliant with `handler-add`
+  'exit': meta.get-function('error', $module: report),
+  'warn': meta.get-function('warn', $module: report)
+) !default;
+
+/// Returns the global map of all current throw-handler functions
+/// associated to their handler names.
+/// @name throw-handlers
+/// @group error
+/// @require {map} $_ErrorHandlers
+/// @return {map} - the handler register map
+@function handlers() {
+  @return $_ErrorHandlers;
+}
+
+/// Returns true if a handler (function) with given name currently
+/// exists. The letter casing does matter.
+/// @name throw-handler-exists
+/// @group error
+/// @param {string} $pHandlerName - the name of the target handler
+/// @require {function} is-string
+/// @return {boolean} - true if a handler with given name exists
+/// @throws Error if `$pHandlerName` is not a string
+@function handler-exists($pHandlerName) {
+  @return if(types.is-string($pHandlerName),
+    map.has-key($_ErrorHandlers, $pHandlerName),
+    report.error("Handler name must be a string"));
+}
+
+/// Returns the with given name associated handler function, if
+/// found. If no handler with given name is found, an error is thrown.
+/// @name throw-handler-get
+/// @group error
+/// @param {string} $pHandlerName - the name of the target handler
+/// @require {function} throw-handler-exists
+/// @return {function} - the function associated with given name
+/// @throws Error if no handler `$pHandlerName` is found
+@function handler-get($pHandlerName) {
+  @return if(handler-exists($pHandlerName),
+    map.get($_ErrorHandlers, $pHandlerName),
+    report.error("Handler '#{$pHandlerName}' unknown"));
+}
+
+/// Associates `$pHandlerFunction` with `$pHandlerName` in the global
+/// handler map if no handler with given name exists. If a handler
+/// with given name is already known, an error is thrown.
+/// A handler function must accept one argument that is the error
+/// message. Registered handler functions can be invoked using their
+/// handler name with [throw-invoke](#error-function-throw-invoke).
+/// @name throw-handler-add
+/// @group error
+/// @param {string} $pHandlerName - name of the new handler
+/// @param {function} $pHandlerFunction -
+///   function of the new handler. The function accepts one argument
+///   being the error message (any type) and returns whatever.
+///   If the function returns null on invocation, the return value
+///   may be discarded and another value prioritised, but a non-null
+///   return should not be discarded.
+/// @require {function} throw-handler-exists
+/// @require {function} is-function
+/// @return {string} - `$pHandlerName` if the operation succeeded
+/// @throws
+///   Error if a handler with given name is already existing,
+///   or if `$pHandlerFunction` is not a valid function reference.
+@function handler-add($pHandlerName, $pHandlerFunction) {
+  @return if(handler-exists($pHandlerName),
+    report.error("Handler '#{$pHandlerName}' already known"),
+    // update the handler map and assert `$pHandlerFunction`
+    _handler_set($pHandlerName, $pHandlerFunction)
+  );
+}
+
+/// Replaces the with `$pHandlerName` associated function with
+/// `$pHandlerFunction` if there is a handler with given name.
+/// If no handler with an equal name is found, an error is thrown.
+/// A handler function must accept one argument that is the error
+/// message. Registered handler functions can be invoked using their
+/// handler name with [throw-invoke](#error-function-throw-invoke).
+/// @name throw-handler-replace
+/// @group error
+/// handler name with [throw-invoke](#assertion-function-throw-invoke).
+/// @param {string} $pHandlerName - name of the handler to replace
+/// @param {function} $pHandlerFunction -
+///   the new function of the handler. The function accepts one
+///   argument being the error message (any type) and returns
+///   whatever. If the function returns null on invocation, the
+///   return value may be discarded and another value prioritised,
+///   but a non-null return should not be discarded.
+/// @require {function} throw-handler-exists
+/// @require {function} is-function
+/// @return {string} - `$pHandlerName` if the operation succeeded
+/// @throws
+///   Error if no handler with given name is currently existing,
+///   or if `$pHandlerFunction` is not a valid function reference.
+@function handler-replace($pHandlerName, $pHandlerFunction) {
+  @return if(not handler-exists($pHandlerName),
+    report.error("Handler '#{$pHandlerName}' unknown"),
+    // update the handler map and assert `$pHandlerFunction`
+    _handler_set($pHandlerName, $pHandlerFunction)
+  );
+}
+
+/// Invokes `$pHandler` with `$vaArgs` as the call arguments.
+/// - If `$pHandler` is a string, the function associated to given
+///   string is called using `$vaArgs`. If that function is not
+///   found, as in no handler with `$pHandler` as name is found,
+///   an error is thrown.
+/// - If `$pHandler` is a function, the function is called immediately
+///   using given `$vaArgs`.
+///
+/// If `$pHandler` is neither a string nor a function, an error is
+/// thrown.
+/// <br/><br/>
+/// **Be aware:** usually `$vaArgs` should be exactly one argument,
+/// since all handler functions are required to accept one argument.
+/// But theoretically, if you invoke custom handlers, you can pass
+/// more arguments to them using this function.
+/// @name throw-invoke
+/// @group error
+/// @param {function | string} $pHandler -
+///   the target handler to invoke. Can be a string to reference an
+///   existing handler, or a function that is not required to be
+///   registered as a handler - as in not required to be associated to
+///   a certain handler name in the handler map.
+/// @param {arglist} $vaArgs -
+///   the arguments passed to the call of the handler
+/// @require {function} throw-handler-get
+/// @return {*} - the result of the handler function call
+/// @throws
+///   Error if the invoke failed, `$pHandler` is not a string
+///   nor a function, or if `$pHandler` is a string but no handler
+///   with that string as a name is found.
+@function invoke($pHandler, $vaArgs...) {
+  @if (types.is-function($pHandler)) {
+    @return call($pHandler, $vaArgs...);
+  } @else if (types.is-string($pHandler)) {
+    @return invoke(handler-get($pHandler), $vaArgs...);
+  }
+  // $_ErrorHandlers is guaranteed to not be empty
+  @return report.error("Handler must be either #{
+      meta.inspect(map.keys($_ErrorHandlers))
+  } or a function that accepts one argument");
+}
+
+@function _handler_set($pHandlerName, $pHandlerFunction) {
+  @if (not types.is-function($pHandlerFunction)) {
+    @return report.error("Handler function not a function reference");
+  }
+  $_ErrorHandlers: map.set(
+      $_ErrorHandlers, $pHandlerName, $pHandlerFunction
+  ) !global;
+  @return $pHandlerName;
+}
+
+// <===> Default handlers <===>
+
+/// Returns the `exit` handler, that when invoked throws
+/// an error with input message and terminates the compilation,
+/// by default.
+/// The termination of the compilation is not guaranteed, since the
+/// exit-handler's implementation can be overwritten, but should not.
+/// @name throw-exit-handler
+/// @group error
+/// @return {function} - the exit handler function
+@function exit-handler() {
+  @return handler-get('exit');
+}
+
+/// Returns the `warn` handler, that when invoked throws
+/// a warning with input message and continues the compilation,
+/// by default.
+/// The return value of that function is always null.
+/// @name throw-warn-handler
+/// @group error
+/// @return {function} - the warn handler function
+@function warn-handler() {
+  @return handler-get('warn');
+}

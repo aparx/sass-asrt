@@ -1,0 +1,17 @@
+@use "../utils";
+@use "../error";
+
+/// Returns the default throw-handler used for assertions.
+/// The currently defined default handler is the 'exit' handler,
+/// that, by default, throws an error using the at-error directive
+/// which terminates the compilation when invoked. The termination is
+/// not guaranteed since the 'exit' handler can be overridden using
+/// `throw-handler-replace`, which might change the implementation
+/// details.
+/// @group assertion
+/// @require {function} throw-exit-handler
+/// @require {function} throw-handler-get
+/// @return {function} - the handler function associated with 'exit'
+@function default-throw-handler() {
+  @return error.throw-exit-handler();
+}

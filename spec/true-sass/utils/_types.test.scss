@@ -1,0 +1,241 @@
+@use "../../../node_modules/sass-true" as true;
+@use "../../../src/utils/types";
+
+@include true.describe('is-empty [function]') {
+  @include true.it('Returns true if is empty') {
+    @include true.assert-true(types.is-empty(''));
+    @include true.assert-true(types.is-empty(""));
+    @include true.assert-true(types.is-empty([]));
+    @include true.assert-true(types.is-empty(()));
+    @include true.assert-false(types.is-empty(' '));
+    @include true.assert-false(types.is-empty(a));
+    @include true.assert-false(types.is-empty("a"));
+    @include true.assert-false(types.is-empty([a]));
+    @include true.assert-false(types.is-empty((a: x)));
+  }
+}
+
+@include true.describe('count [function]') {
+  @include true.it('Returns the length of an iterable or string') {
+    @include true.assert-equal(types.count(4), null);
+    @include true.assert-equal(types.count(4, "uTl064y"), "uTl064y");
+    @include true.assert-equal(types.count(''), 0);
+    @include true.assert-equal(types.count(()), 0);
+    @include true.assert-equal(types.count([]), 0);
+    @include true.assert-equal(types.count(' '), 1);
+    @include true.assert-equal(types.count('a b'), 3);
+    @include true.assert-equal(types.count((a, b, c)), 3);
+    @include true.assert-equal(types.count([a, b, c]), 3);
+    @include true.assert-equal(types.count((a: (y: x), b: c)), 2);
+  }
+}
+
+@include true.describe('is-map [function]') {
+  @include true.it('Returns true if an object is a map') {
+    @include true.assert-true(types.is-map((a: x)));
+    @include true.assert-false(types.is-map(()));
+    @include true.assert-false(types.is-map(null));
+  }
+}
+
+@include true.describe('is-list [function]') {
+  @include true.it('Returns true if an object is a list') {
+    @include true.assert-true(types.is-list(()));
+    @include true.assert-false(types.is-list((a: x)));
+    @include true.assert-false(types.is-list(null));
+  }
+}
+
+@include true.describe('as-boolean [function]') {
+  @include true.it('Returns a boolean if a value is natively truthy') {
+    @include true.assert-false(types.as-boolean(null));
+    @include true.assert-true(types.as-boolean(true));
+    @include true.assert-false(types.as-boolean(false));
+    @include true.assert-true(types.as-boolean('false'));
+  }
+}
+
+@include true.describe('is-truthy [function]') {
+  @include true.it('Returns true if a value is extensively truthy') {
+    @include true.assert-false(types.is-truthy(false));
+    @include true.assert-false(types.is-truthy(null));
+    @include true.assert-false(types.is-truthy(()));
+    @include true.assert-false(types.is-truthy([]));
+    @include true.assert-false(types.is-truthy(''));
+    @include true.assert-true(types.is-truthy(true));
+    @include true.assert-true(types.is-truthy(' '));
+    @include true.assert-true(types.is-truthy((a: x)));
+    @include true.assert-true(types.is-truthy((a)));
+    @include true.assert-true(types.is-truthy([a]));
+  }
+}
+
+@include true.describe('is-falsy [function]') {
+  @include true.it('Returns true if a value is extensively falsy') {
+    @include true.assert-true(types.is-falsy(false));
+    @include true.assert-true(types.is-falsy(null));
+    @include true.assert-true(types.is-falsy(()));
+    @include true.assert-true(types.is-falsy([]));
+    @include true.assert-true(types.is-falsy(''));
+    @include true.assert-false(types.is-falsy(true));
+    @include true.assert-false(types.is-falsy(' '));
+    @include true.assert-false(types.is-falsy((a: x)));
+    @include true.assert-false(types.is-falsy((a)));
+    @include true.assert-false(types.is-falsy([a]));
+  }
+}
+
+@include true.describe('is-time [function]') {
+  @include true.it('Returns true if a value is a time') {
+    @include true.assert-true(types.is-time(20s));
+    @include true.assert-true(types.is-time(20ms));
+    @include true.assert-false(types.is-time(null));
+    @include true.assert-false(types.is-time(s));
+    @include true.assert-false(types.is-time(ms));
+    @include true.assert-false(types.is-time(20));
+    @include true.assert-false(types.is-time('20s'));
+    @include true.assert-false(types.is-time('20ms'));
+    @include true.assert-false(types.is-time(null));
+  }
+}
+
+@include true.describe('is-angle [function]') {
+  @include true.it('Returns true if a value is an angle') {
+    @include true.assert-true(types.is-angle(20deg));
+    @include true.assert-true(types.is-angle(20rad));
+    @include true.assert-true(types.is-angle(20turn));
+    @include true.assert-true(types.is-angle(20grad));
+    @include true.assert-false(types.is-angle(deg));
+    @include true.assert-false(types.is-angle(rad));
+    @include true.assert-false(types.is-angle(turn));
+    @include true.assert-false(types.is-angle(grad));
+    @include true.assert-false(types.is-angle(20));
+    @include true.assert-false(types.is-angle('20deg'));
+    @include true.assert-false(types.is-angle('20rad'));
+    @include true.assert-false(types.is-angle('20grad'));
+    @include true.assert-false(types.is-angle('20turn'));
+    @include true.assert-false(types.is-angle(null));
+  }
+}
+
+@include true.describe('is-frequency [function]') {
+  @include true.it('Returns true if a value is a frequency') {
+    @include true.assert-true(types.is-frequency(20kHz));
+    @include true.assert-true(types.is-frequency(20Hz));
+    @include true.assert-false(types.is-frequency(20));
+    @include true.assert-false(types.is-frequency(Hz));
+    @include true.assert-false(types.is-frequency(kHz));
+    @include true.assert-false(types.is-frequency('20Hz'));
+    @include true.assert-false(types.is-frequency('20kHz'));
+    @include true.assert-false(types.is-frequency(null));
+  }
+}
+
+@include true.describe('is-integer [function]') {
+  @include true.it('Returns true if a value is an integer') {
+    @include true.assert-true(types.is-integer(20));
+    @include true.assert-true(types.is-integer(1));
+    @include true.assert-true(types.is-integer(17643));
+    @include true.assert-false(types.is-integer(99.99));
+    @include true.assert-false(types.is-integer(0.123));
+    @include true.assert-false(types.is-integer(0.98364));
+    @include true.assert-false(types.is-integer(false));
+    @include true.assert-false(types.is-integer(null));
+    @include true.assert-false(types.is-integer('1234'));
+    @include true.assert-false(types.is-integer(null));
+  }
+}
+
+@include true.describe('is-relative-length [function]') {
+  @include true.it('Returns true if a value is a relative length') {
+    @include true.assert-true(types.is-relative-length(1em));
+    @include true.assert-true(types.is-relative-length(1rem));
+    @include true.assert-true(types.is-relative-length(1ch));
+    @include true.assert-true(types.is-relative-length(1ex));
+    @include true.assert-true(types.is-relative-length(1vw));
+    @include true.assert-true(types.is-relative-length(1vh));
+    @include true.assert-true(types.is-relative-length(1vmin));
+    @include true.assert-true(types.is-relative-length(1vmax));
+    @include true.assert-false(types.is-relative-length(1px));
+    @include true.assert-false(types.is-relative-length(20));
+    @include true.assert-false(types.is-relative-length(em));
+    @include true.assert-false(types.is-relative-length(rem));
+    @include true.assert-false(types.is-relative-length(ch));
+    @include true.assert-false(types.is-relative-length(ex));
+    @include true.assert-false(types.is-relative-length(vw));
+    @include true.assert-false(types.is-relative-length(vh));
+    @include true.assert-false(types.is-relative-length(vmin));
+    @include true.assert-false(types.is-relative-length(vmax));
+    @include true.assert-false(types.is-relative-length('20'));
+    @include true.assert-false(types.is-relative-length('20vmin'));
+    @include true.assert-false(types.is-relative-length(null));
+  }
+}
+
+@include true.describe('is-absolute-length [function]') {
+  @include true.it('Returns true if a value is an absolute length') {
+    @include true.assert-true(types.is-absolute-length(1px));
+    @include true.assert-true(types.is-absolute-length(1cm));
+    @include true.assert-true(types.is-absolute-length(1mm));
+    @include true.assert-true(types.is-absolute-length(1in));
+    @include true.assert-true(types.is-absolute-length(1pt));
+    @include true.assert-true(types.is-absolute-length(1pc));
+    @include true.assert-false(types.is-absolute-length(1rem));
+    @include true.assert-false(types.is-absolute-length(1em));
+    @include true.assert-false(types.is-absolute-length(pc));
+    @include true.assert-false(types.is-absolute-length(cm));
+    @include true.assert-false(types.is-absolute-length(mm));
+    @include true.assert-false(types.is-absolute-length(in));
+    @include true.assert-false(types.is-absolute-length(pt));
+    @include true.assert-false(types.is-absolute-length(pc));
+    @include true.assert-false(types.is-absolute-length('1px'));
+    @include true.assert-false(types.is-absolute-length('1em'));
+    @include true.assert-false(types.is-absolute-length(null));
+  }
+}
+
+@include true.describe('is-percentage [function]') {
+  @include true.it('Returns true if a value is a percentage') {
+    @include true.assert-true(types.is-percentage(20%));
+    @include true.assert-true(types.is-percentage(1.5%));
+    @include true.assert-true(types.is-percentage(-5%));
+    @include true.assert-false(types.is-percentage('20%'));
+    @include true.assert-false(types.is-percentage('%'));
+    @include true.assert-false(types.is-percentage(null));
+  }
+}
+
+@include true.describe('is-resolution [function]') {
+  @include true.it('Returns true if a value is a resolution') {
+    @include true.assert-true(types.is-resolution(20dpi));
+    @include true.assert-true(types.is-resolution(20dpcm));
+    @include true.assert-true(types.is-resolution(20dppx));
+    @include true.assert-true(types.is-resolution(-5dpi));
+    @include true.assert-false(types.is-resolution(1deg));
+    @include true.assert-false(types.is-resolution(1cm));
+    @include true.assert-false(types.is-resolution(1rem));
+    @include true.assert-false(types.is-resolution(dpi));
+    @include true.assert-false(types.is-resolution(dpcm));
+    @include true.assert-false(types.is-resolution(dppx));
+    @include true.assert-false(types.is-resolution('20dppx'));
+    @include true.assert-false(types.is-resolution('1dpi'));
+    @include true.assert-false(types.is-resolution(null));
+  }
+}
+
+@include true.describe('is-position [function]') {
+  @include true.it('Returns true if a value is a position') {
+    @include true.assert-true(types.is-position('top'));
+    @include true.assert-true(types.is-position('left'));
+    @include true.assert-true(types.is-position('center'));
+    @include true.assert-true(types.is-position('right'));
+    @include true.assert-true(types.is-position('bottom'));
+    @include true.assert-true(types.is-position(20px));
+    @include true.assert-true(types.is-position(20%));
+    @include true.assert-true(types.is-position(1rem));
+    @include true.assert-true(types.is-position(1em));
+    @include true.assert-false(types.is-position('1rem'));
+    @include true.assert-false(types.is-position(20));
+    @include true.assert-false(types.is-position(null));
+  }
+}

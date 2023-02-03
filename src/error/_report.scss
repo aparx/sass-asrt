@@ -1,0 +1,32 @@
+// This module may not import any other file in this project.
+@use "sass:meta";
+@use "../utils/types";
+
+/// Simple referencable function that throws an error with given
+/// message. It utilizes the at-error directive, if available, which
+/// terminates the compilation.
+/// @name report-error
+/// @group error
+/// @param {*} $pMessage - the error message
+/// @return {never | null} -
+///   never returns unless the at-error directive is
+///   disabled, which will trigger a warning and a null return
+@function error($pMessage) {
+  @if (not meta.feature-exists('at-error')) {
+    @return warn("ERROR: #{meta.inspect($pMessage)}");
+  }
+  @error $pMessage;
+}
+
+/// Simple referencable function that throws a warning with given
+/// message. It utilizes the at-warn directive.
+/// @name report-warn
+/// @group error
+/// @param {*} $pMessage - the warn message
+/// @param {*} $pReturnValue [null] -
+///   the value returned after warning (optional)
+/// @return {*} - returns `$pReturnValue`
+@function warn($pMessage, $pReturnValue: null) {
+  @warn $pMessage;
+  @return $pReturnValue;
+}

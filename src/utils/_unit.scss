@@ -1,0 +1,65 @@
+/*
+ * TIME_UNITS       ::=   'ms' 's' 'h'
+ * ANGLE_UNITS      ::=   'deg' 'rad' 'grad' 'turn'
+ * FREQUENCY_UNITS  ::=   'Hz' 'kHz'
+ * RELATIVE_UNITS   ::=   'em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax'
+ * ABSOLUTE_UNITS   ::=   'cm' 'mm' 'in' 'px' 'pt' 'pc'
+ * RESOLUTION_UNITS ::=   'dpi' 'dpcm' 'dppx'
+ * POSITION_UNITS   ::=   'top' 'right' 'bottom' 'left' 'center'
+*/
+
+/// Returns a list of all CSS time units.
+/// @name unit-times
+/// @group utils
+/// @return {list} a list of all time units
+@function times() {
+  @return 'ms' 's';
+}
+
+/// Returns a list of all CSS angle units.
+/// @name unit-angles
+/// @group utils
+/// @return {list} a list of all angle units
+@function angles() {
+  @return 'deg' 'rad' 'grad' 'turn';
+}
+
+/// Returns a list of all CSS frequency units.
+/// @name unit-frequencies
+/// @group utils
+/// @return {list} a list of all angle units
+@function frequencies() {
+  @return 'Hz' 'kHz';
+}
+
+/// Returns a list of all CSS relative length units.
+/// @name unit-relative-lengths
+/// @group utils
+/// @return {list} a list of all relative length units
+@function relative-lengths() {
+  @return 'em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax';
+}
+
+/// Returns a list of all CSS absolute length units.
+/// @name unit-absolute-lengths
+/// @group utils
+/// @return {list} a list of all absolute length units
+@function absolute-lengths() {
+  @return 'cm' 'mm' 'in' 'px' 'pt' 'pc';
+}
+
+/// Returns a list of all CSS resolution units.
+/// @name unit-resolutions
+/// @group utils
+/// @return {list} a list of all resolution units
+@function resolutions() {
+  @return 'dpi' 'dpcm' 'dppx';
+}
+
+/// Returns a list of all CSS position units.
+/// @name unit-positions
+/// @group utils
+/// @return {list} a list of all position units
+@function positions() {
+  @return 'top' 'right' 'bottom' 'left' 'center';
+}

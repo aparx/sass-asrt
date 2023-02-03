@@ -1,0 +1,20 @@
+// Code written here is following this guide:
+// https://zvint.github.io/sass-style-guide/
+@use "../../src/asrt";
+
+@mixin style-background($pBgColor, $pFgColor) {
+  background: asrt.check-is-color($pBgColor);
+  color: asrt.check-is-color($pFgColor);
+  // from here on we know $pBgColor and $pFgColor are colors
+  // ...
+}
+
+.container {
+  @include style-background(black, white);
+  // will include:
+  //  background: black;
+  //  color: white;
+
+  // @include style-background("thisIsNotAColor", white);
+  // ^ Error: 'value "thisIsNotAColor" not a color'
+}
