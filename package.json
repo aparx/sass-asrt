@@ -22,7 +22,8 @@
     "sassdoc": "^2.7.4"
   },
   "files": [
-    "src/"
+    "src/",
+    "README.md"
   ],
   "repository": {
     "type": "git",
