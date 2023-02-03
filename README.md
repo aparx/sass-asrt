@@ -30,7 +30,7 @@ npm install sass-asrt
 Very basic example:
 ```scss
 // _some_mixins.scss
-@use "../node-modules/sass-asrt";
+@use "../node-modules/sass-asrt" as asrt;
 
 @mixin style-background($background, $foreground) {
   // we can assert a certain type
@@ -46,7 +46,7 @@ We can also add custom handlers to assertions, that are functions
 associated to a certain name in a global register.
 ```scss
 @use "sass:meta";
-@use "../node-modules/sass-asrt";
+@use "../node-modules/sass-asrt" as asrt;
 
 // _handlers.scss
 @function foo-bar-handler($errorMessage) {
