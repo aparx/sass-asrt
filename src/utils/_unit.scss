@@ -1,12 +1,12 @@
-/*
- * TIME_UNITS       ::=   'ms' 's' 'h'
- * ANGLE_UNITS      ::=   'deg' 'rad' 'grad' 'turn'
- * FREQUENCY_UNITS  ::=   'Hz' 'kHz'
- * RELATIVE_UNITS   ::=   'em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax'
- * ABSOLUTE_UNITS   ::=   'cm' 'mm' 'in' 'px' 'pt' 'pc'
- * RESOLUTION_UNITS ::=   'dpi' 'dpcm' 'dppx'
- * POSITION_UNITS   ::=   'top' 'right' 'bottom' 'left' 'center'
-*/
+//
+// TIME_UNITS       ::=   'ms' 's' 'h'
+// ANGLE_UNITS      ::=   'deg' 'rad' 'grad' 'turn'
+// FREQUENCY_UNITS  ::=   'Hz' 'kHz'
+// RELATIVE_UNITS   ::=   'em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax'
+// ABSOLUTE_UNITS   ::=   'cm' 'mm' 'in' 'px' 'pt' 'pc'
+// RESOLUTION_UNITS ::=   'dpi' 'dpcm' 'dppx'
+// POSITION_UNITS   ::=   'top' 'right' 'bottom' 'left' 'center'
+//
 
 /// Returns a list of all CSS time units.
 /// @name unit-times
