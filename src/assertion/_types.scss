@@ -12,7 +12,7 @@
 /// fails.
 /// @name check-is-empty
 /// @group assertion
-/// @param {*} $pIterableOrString - the value to spec
+/// @param {*} $pIterableOrString - the value to test
 /// @param {*} $pMessage ["must be empty"] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -43,7 +43,7 @@
 /// succeeds.
 /// @name check-not-empty
 /// @group assertion
-/// @param {*} $pIterableOrString - the value to spec
+/// @param {*} $pIterableOrString - the value to test
 /// @param {*} $pMessage ["must not be empty"] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -73,7 +73,7 @@
 /// Asserts `$pValue` to be of type map.
 /// @name check-is-map
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a map")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -101,7 +101,7 @@
 /// Asserts `$pValue` to be of type list.
 /// @name check-is-list
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a list")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -129,7 +129,7 @@
 /// Asserts `$pValue` to be of type arglist.
 /// @name check-is-arglist
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not an arglist")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -157,7 +157,7 @@
 /// Asserts `$pValue` to be of type function.
 /// @name check-is-function
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a function")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -186,7 +186,7 @@
 /// An iterable is either a list, arglist or map.
 /// @name check-is-iterable
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not an iterable")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -215,7 +215,7 @@
 /// Undefined means it is either literal null or "none".
 /// @name check-is-undefined
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not undefined")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -246,7 +246,7 @@
 /// A primitive is either a string, number, color or boolean.
 /// @name check-is-primitive
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a primitive")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -274,7 +274,7 @@
 /// Asserts `$pValue` to be of type string.
 /// @name check-is-string
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a string")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -302,7 +302,7 @@
 /// Asserts `$pValue` to be of type number.
 /// @name check-is-number
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a number")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -330,7 +330,7 @@
 /// Asserts `$pValue` to be of type color.
 /// @name check-is-color
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a color")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -358,7 +358,7 @@
 /// Asserts `$pValue` to be a boolean (type of bool).
 /// @name check-is-bool
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a boolean")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -388,7 +388,7 @@
 /// an empty string, an empty list, an empty map nor numeric null.
 /// @name check-is-truthy
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not truthy")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -418,7 +418,7 @@
 /// an empty string, an empty list, an empty map or numeric null.
 /// @name check-is-falsy
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not falsy")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -448,7 +448,7 @@
 /// Asserts `$pValue` to has a unit that is contained in given list.
 /// @name check-has-unit
 /// @group assertion
-/// @param {*} $pValue - the value to spec (not the unit standalone)
+/// @param {*} $pValue - the value to test (not the unit standalone)
 /// @param {*} $pUnitList - the list of all units to spec for
 /// @param {*} $pMessage [_has_unit_fail($pValue, $pUnitList)] -
 ///   the error message if this assertion fails (optional)
@@ -477,7 +477,7 @@
 /// Asserts `$pValue` to be a time value.
 /// @name check-is-time
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a time")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -505,7 +505,7 @@
 /// Asserts `$pValue` to be a duration.
 /// @name check-is-duration
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a duration")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -533,7 +533,7 @@
 /// Asserts `$pValue` to be an angle.
 /// @name check-is-angle
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not an angle")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -561,7 +561,7 @@
 /// Asserts `$pValue` to be a frequency.
 /// @name check-is-frequency
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a frequency")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -589,7 +589,7 @@
 /// Asserts `$pValue` to be an integer.
 /// @name check-is-integer
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not an integer")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -617,7 +617,7 @@
 /// Asserts `$pValue` to be a relative length.
 /// @name check-is-relative-length
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a relative length")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -645,7 +645,7 @@
 /// Asserts `$pValue` to be an absolute length.
 /// @name check-is-absolute-length
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not an absolute length")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -673,7 +673,7 @@
 /// Asserts `$pValue` to be a percentage.
 /// @name check-is-percentage
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a percentage")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -701,7 +701,7 @@
 /// Asserts `$pValue` to be a relative or absolute length.
 /// @name check-is-length
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a length")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -729,7 +729,7 @@
 /// Asserts `$pValue` to be a resolution.
 /// @name check-is-resolution
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a resolution")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -757,7 +757,7 @@
 /// Asserts `$pValue` to be a position.
 /// @name check-is-position
 /// @group assertion
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @param {*} $pMessage [_generic_fail($pValue, "not a position")] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -

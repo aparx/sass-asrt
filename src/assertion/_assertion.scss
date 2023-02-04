@@ -9,7 +9,7 @@
 /// @name assert-equal
 /// @group assertion
 /// @param {*} $pExpected - the value expected from `$pValue`
-/// @param {*} $pValue - the value to spec against `$pExpected`
+/// @param {*} $pValue - the value to test against `$pExpected`
 /// @param {*} $pMessage [_equal_fail($pExpected)] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -36,7 +36,7 @@
 /// @name assert-unequal
 /// @group assertion
 /// @param {*} $pUnexpected - the value not expected from `$pValue`
-/// @param {*} $pValue - the value to spec against `$pUnexpected`
+/// @param {*} $pValue - the value to test against `$pUnexpected`
 /// @param {*} $pMessage [_unequal_fail($pExpected)] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -121,7 +121,7 @@
 /// @name assert-equal
 /// @group assertion
 /// @param {*} $pExpected - the value expected from `$pValue`
-/// @param {*} $pValue - the value to spec against `$pExpected`
+/// @param {*} $pValue - the value to test against `$pExpected`
 /// @param {*} $pMessage [_equal_fail($pExpected)] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -
@@ -141,7 +141,7 @@
 /// @name assert-unequal
 /// @group assertion
 /// @param {*} $pUnexpected - the value not expected from `$pValue`
-/// @param {*} $pValue - the value to spec against `$pUnexpected`
+/// @param {*} $pValue - the value to test against `$pUnexpected`
 /// @param {*} $pMessage [_equal_fail($pExpected)] -
 ///   the error message if this assertion fails (optional)
 /// @param {string | function} $pHandler [default-throw-handler()] -

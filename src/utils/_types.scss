@@ -41,7 +41,7 @@
 
 /// Returns true if `$pValue` is of type map.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a map
 @function is-map($pValue) {
   @return meta.type-of($pValue) == 'map';
@@ -49,7 +49,7 @@
 
 /// Returns true if `$pValue` is of type list.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a list
 @function is-list($pValue) {
   @return meta.type-of($pValue) == 'list';
@@ -57,7 +57,7 @@
 
 /// Returns true if `$pValue` is of type arglist.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is an arglist
 @function is-arglist($pValue) {
   @return meta.type-of($pValue) == 'arglist';
@@ -65,7 +65,7 @@
 
 /// Returns true if `$pValue` is of type function.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a function
 @function is-function($pValue) {
   @return meta.type-of($pValue) == 'function';
@@ -75,7 +75,7 @@
 /// Given value is an iterable if it is either a list, an arglist
 /// or a map.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is an iterable
 @function is-iterable($pValue) {
   @return is-list($pValue)
@@ -86,7 +86,7 @@
 /// Returns true if `$pValue` is undefined.
 /// A value is undefined if it is null or "none".
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is undefined
 @function is-undefined($pValue) {
   @return $pValue == null or $pValue == none;
@@ -98,7 +98,7 @@
 /// Given value is a primitive if it is either a string, number,
 /// color or boolean.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a primitive
 @function is-primitive($pValue) {
   @return is-string($pValue)
@@ -109,7 +109,7 @@
 
 /// Returns true if `$pValue` is a string.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a string
 @function is-string($pValue) {
   @return meta.type-of($pValue) == 'string';
@@ -117,7 +117,7 @@
 
 /// Returns true if `$pValue` is a number.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a number
 @function is-number($pValue) {
   @return meta.type-of($pValue) == 'number';
@@ -125,7 +125,7 @@
 
 /// Returns true if `$pValue` is a color.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a color
 @function is-color($pValue) {
   @return meta.type-of($pValue) == 'color';
@@ -133,7 +133,7 @@
 
 /// Returns true if `$pValue` is a boolean.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a boolean
 @function is-bool($pValue) {
   @return meta.type-of($pValue) == 'bool';
@@ -152,7 +152,7 @@
 /// A value is extensively truthy if it is natively truthy and neither
 /// an empty string, an empty list, an empty map nor numeric null.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a extensively truthy
 @function is-truthy($pValue) {
   @return if((
@@ -168,7 +168,7 @@
 /// A value is extensively falsy if it is natively falsy or either
 /// an empty string, an empty list, an empty map or numeric null.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} - true if `$pValue` is a extensively falsy
 @function is-falsy($pValue) {
   @return not is-truthy($pValue);
@@ -178,7 +178,7 @@
 
 /// Returns true if the `$pValue`'s unit is contained in `$pUnitList`.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @return {boolean} -
 ///   true if `$pUnitList` contains the unit of `$Value`
 @function has-unit($pValue, $pUnitList) {
@@ -189,7 +189,7 @@
 
 /// Returns true if `$pValue` is a time or duration.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-times
@@ -201,7 +201,7 @@
 /// Returns true if `$pValue` is a duration or time.
 /// @name is-duration
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-time
 /// @require {function} unit-times
 /// @return {boolean} - true if `$pValue` is a time value
@@ -211,7 +211,7 @@
 
 /// Returns true if `$pValue` is an angle.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-angles
@@ -222,7 +222,7 @@
 
 /// Returns true if `$pValue` is a frequency.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-frequencies
@@ -233,7 +233,7 @@
 
 /// Returns true if `$pValue` is an integer.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @return {boolean} - true if `$pValue` is an integer
 @function is-integer($pValue) {
@@ -242,7 +242,7 @@
 
 /// Returns true if `$pValue` is a relative length.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-relative-lengths
@@ -253,7 +253,7 @@
 
 /// Returns true if `$pValue` is an absolute length.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-absolute-lengths
@@ -264,7 +264,7 @@
 
 /// Returns true if `$pValue` is a percentage.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @return {boolean} - true if `$pValue` is a percentage
 @function is-percentage($pValue) {
@@ -275,7 +275,7 @@
 /// Given value is a length if it is either a relative- or absolute
 /// length.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-relative-length
 /// @require {function} is-absolute-length
 /// @return {boolean} - true if `$pValue` is a length value
@@ -285,7 +285,7 @@
 
 /// Returns true if `$pValue` is a resolution.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-number
 /// @require {function} has-unit
 /// @require {function} unit-resolutions
@@ -296,7 +296,7 @@
 
 /// Returns true if `$pValue` is a position.
 /// @group utils
-/// @param {*} $pValue - the value to spec
+/// @param {*} $pValue - the value to test
 /// @require {function} is-length
 /// @require {function} is-percentage
 /// @require {function} has-unit

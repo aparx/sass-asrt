@@ -5,7 +5,7 @@
 /// Otherwise, returns `$pIfNull`.
 /// @name nonnull-or
 /// @group utils
-/// @param {*} $pValue - the value to spec to be not null
+/// @param {*} $pValue - the value to test to be not null
 /// @param {*} $pIfNull - the value returned if `$pValue` is null
 /// @return {*} `$pValue` if not null, else `$pIfNull`
 @function nonnull-or($pValue, $pIfNull) {
@@ -18,7 +18,7 @@
 /// an empty list, an empty map, an empty string nor false or null.
 /// @name truthy-or
 /// @group utils
-/// @param {*} $pValue - the value to spec to be truthy
+/// @param {*} $pValue - the value to test to be truthy
 /// @param {*} $pIfFalsy - the value returned if `$pValue` is falsy
 /// @require {function} is-truthy
 /// @return {*} `$pValue` if truthy, else `$pIfFalsy`
@@ -32,7 +32,7 @@
 /// an empty list, an empty map, an empty string, false or null.
 /// @name falsy-or
 /// @group utils
-/// @param {*} $pValue - the value to spec to be falsy
+/// @param {*} $pValue - the value to test to be falsy
 /// @param {*} $pIfTruthy - the value returned if `$pValue` is truthy
 /// @require {function} is-falsy
 /// @return {*} `$pValue` if falsy, else `$pIfTruthy`
