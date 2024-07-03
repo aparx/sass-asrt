@@ -1,4 +1,4 @@
-**zvint's sass-asrt**
+**aparx's sass-asrt**
 
 A simple error, assertion and type utility library for Sass.
 
@@ -15,10 +15,10 @@ you can use to validate parameters and the environment. It also adds custom erro
 handling, so you can define how your errors should be handled.
 
 The entire library is done using this guide:
-https://zvint.github.io/sass-style-guide/
+https://aparx.github.io/sass-style-guide/
 
 
-You can find the sassdocs here: https://zvint.github.io/sass-asrt/
+You can find the sassdocs here: https://aparx.github.io/sass-asrt/
 
 
 ## Installation
